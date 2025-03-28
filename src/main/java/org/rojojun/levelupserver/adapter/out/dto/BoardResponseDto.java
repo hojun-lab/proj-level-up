@@ -1,2 +1,4 @@
-package org.rojojun.levelupserver.adapter.out.dto;public @interface BoardResponseDto {
+package org.rojojun.levelupserver.adapter.out.dto;
+
+public record BoardResponseDto() {
 }

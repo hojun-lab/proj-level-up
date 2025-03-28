@@ -1,6 +1,6 @@
-package org.rojojun.levelupserver.domain.board;
+package org.rojojun.levelupserver.domain.board.entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,4 +12,13 @@ import org.rojojun.levelupserver.common.BaseEntity;
 @Getter
 @Entity
 public class Video extends BaseEntity {
+    private String url;
+    private int viewCount;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", foreignKey = @ForeignKey(name = "FK_BOARD_VIDEO"))
+    private Board board;
+
+    public static Video of(String url, Board board) {
+        return new Video(url, 0, board);
+    }
 }
