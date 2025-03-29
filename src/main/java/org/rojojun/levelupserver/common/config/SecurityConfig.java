@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
-                                .requestMatchers("/", "/token", "/user/register", "/auth/**", "health").permitAll()
+                                .requestMatchers("/", "/token", "/user/register", "/auth/**", "/check").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

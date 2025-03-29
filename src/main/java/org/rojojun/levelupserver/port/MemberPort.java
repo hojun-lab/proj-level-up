@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.rojojun.levelupserver.adapter.out.dto.MyPageResponseDto;
 import org.rojojun.levelupserver.adapter.out.dto.UserInfoResponseDto;
 import org.rojojun.levelupserver.adapter.out.dto.enums.UserLevel;
+import org.rojojun.levelupserver.domain.board.service.BoardService;
 import org.rojojun.levelupserver.domain.member.entity.Member;
 import org.rojojun.levelupserver.domain.member.entity.MemberEstimate;
 import org.rojojun.levelupserver.domain.member.service.MemberEstimateService;
@@ -21,6 +22,7 @@ public class MemberPort {
     private final MemberService memberService;
     private final MemberEstimateService memberEstimateService;
     private final SkillEstimateService skillEstimateService;
+    private final BoardService boardService;
 
     public void modifyNickname(String email, String nickname) {
         Member member = memberService.findMemberBy(email)
@@ -51,16 +53,8 @@ public class MemberPort {
                 .average()
                 .orElse(0);
 
-        List<SkillEstimate> skillEstimateList = skillEstimateService.getAllBy(email);
-        List<MyPageResponseDto.SkillDetailDto> skillDetailDtoList = skillEstimateList.stream()
-                .collect(Collectors.groupingBy(
-                        SkillEstimate::getSkill,
-                        Collectors.averagingInt(SkillEstimate::getScore)
-                ))
-                .entrySet().stream()
-                .map(map -> new MyPageResponseDto.SkillDetailDto(map.getKey(), map.getValue().intValue()))
-                .toList();
+        int totalPost = boardService.findAllBy(email).size();
 
-        return new MyPageResponseDto(member.getNickname(), UserLevel.calculate(averageScore), skillDetailDtoList);
+        return new MyPageResponseDto(member, UserLevel.calculate(averageScore), totalPost);
     }
 }

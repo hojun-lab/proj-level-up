@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.rojojun.levelupserver.adapter.in.dto.BoardRequestDto;
 import org.rojojun.levelupserver.adapter.out.dto.BoardDetailDto;
 import org.rojojun.levelupserver.adapter.out.dto.ReplyDto;
+import org.rojojun.levelupserver.adapter.out.dto.enums.UserLevel;
+import org.rojojun.levelupserver.adapter.out.projection.BoardProjection;
 import org.rojojun.levelupserver.domain.board.entity.Board;
 import org.rojojun.levelupserver.domain.board.entity.Reply;
 import org.rojojun.levelupserver.domain.board.entity.Video;
@@ -11,12 +13,16 @@ import org.rojojun.levelupserver.domain.board.service.BoardService;
 import org.rojojun.levelupserver.domain.board.service.ReplyService;
 import org.rojojun.levelupserver.domain.board.service.VideoService;
 import org.rojojun.levelupserver.domain.member.entity.Member;
+import org.rojojun.levelupserver.domain.member.entity.MemberEstimate;
+import org.rojojun.levelupserver.domain.member.service.MemberEstimateService;
 import org.rojojun.levelupserver.domain.member.service.MemberService;
 import org.rojojun.levelupserver.domain.skill.entity.Skill;
 import org.rojojun.levelupserver.domain.skill.entity.SkillEstimate;
 import org.rojojun.levelupserver.domain.skill.entity.SkillScoreMeta;
 import org.rojojun.levelupserver.domain.skill.service.SkillEstimateService;
 import org.rojojun.levelupserver.domain.skill.service.SkillService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,15 +48,26 @@ public class BoardPort {
         board.increaseView();
 
         return new BoardDetailDto(
+                board.getWriter().getNickname(),
+                board.getWriter().getProfilePicture(),
                 board.getContent(),
                 video.getUrl(),
+                board.getSkill().getDifficulty(),
                 board.getViewCount(),
                 video.getViewCount(),
                 board.getCreatedAt(),
                 replyList.stream()
-                        .map(ReplyDto::new)
+                        .map(reply -> new ReplyDto(
+                                reply,
+                                skillEstimateService.findBy(reply, reply.getWriter().getEmail()).getScore()
+                        ))
                         .toList()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<BoardProjection> getAll(Pageable pageable) {
+        return boardService.getAll(pageable);
     }
 
     @Transactional

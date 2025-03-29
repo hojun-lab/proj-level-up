@@ -1,5 +1,6 @@
 package org.rojojun.levelupserver.adapter.out.repository;
 
+import org.rojojun.levelupserver.domain.board.entity.Board;
 import org.rojojun.levelupserver.domain.board.entity.Reply;
 import org.rojojun.levelupserver.domain.member.entity.Member;
 import org.rojojun.levelupserver.domain.skill.entity.SkillEstimate;
@@ -12,4 +13,5 @@ public interface SkillEstimateRepository extends JpaRepository<SkillEstimate, Lo
     Optional<List<SkillEstimate>> findAllByEstimatee_Email(String email);
     Optional<List<SkillEstimate>> findAllByEstimatee_EmailAndSkill_Id (String email, Long skillId);
     Optional<SkillEstimate> findByReplyAndEstimator_Email(Reply reply, String email);
+    Optional<SkillEstimate> findByBoardAndEstimator_Email(Board board, String email);
 }

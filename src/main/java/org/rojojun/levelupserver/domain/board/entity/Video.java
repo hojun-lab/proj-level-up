@@ -15,7 +15,7 @@ public class Video extends BaseEntity {
     private String url;
     private int viewCount;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", foreignKey = @ForeignKey(name = "FK_BOARD_VIDEO"))
+    @JoinColumn(name = "board_id", foreignKey = @ForeignKey(name = "FK_VIDEO_BOARD"))
     private Board board;
 
     public static Video of(String url, Board board) {

@@ -3,6 +3,7 @@ package org.rojojun.levelupserver.domain.skill.service;
 import lombok.RequiredArgsConstructor;
 import org.rojojun.levelupserver.adapter.out.dto.SkillResponseDto;
 import org.rojojun.levelupserver.adapter.out.repository.SkillEstimateRepository;
+import org.rojojun.levelupserver.domain.board.entity.Board;
 import org.rojojun.levelupserver.domain.board.entity.Reply;
 import org.rojojun.levelupserver.domain.member.entity.Member;
 import org.rojojun.levelupserver.domain.skill.entity.SkillEstimate;
@@ -31,6 +32,11 @@ public class SkillEstimateService {
 
     public SkillEstimate findBy(Reply reply, String email) {
         return skillEstimateRepository.findByReplyAndEstimator_Email(reply, email)
+                .orElseThrow();
+    }
+
+    public SkillEstimate findBy(Board board, String email) {
+        return skillEstimateRepository.findByBoardAndEstimator_Email(board, email)
                 .orElseThrow();
     }
 }

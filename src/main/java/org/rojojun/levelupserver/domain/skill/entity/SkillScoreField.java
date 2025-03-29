@@ -5,9 +5,7 @@ import java.util.function.Consumer;
 public enum SkillScoreField {
     BEGINNER(SkillScoreMeta::increaseBeginner),
     INTERMEDIATE(SkillScoreMeta::increaseIntermediate),
-    EXPERT(SkillScoreMeta::increaseExpert),
-    AVERAGE_SCORE(SkillScoreMeta::increaseAverageScore),
-    LAST_SCORE(SkillScoreMeta::increaseLastScore);
+    EXPERT(SkillScoreMeta::increaseExpert);
 
     private final Consumer<SkillScoreMeta> updater;
 
