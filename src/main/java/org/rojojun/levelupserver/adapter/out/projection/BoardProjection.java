@@ -1,13 +1,17 @@
 package org.rojojun.levelupserver.adapter.out.projection;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-public record BoardProjection(
-        String writerName,
-        String writerPicture,
-        String videoUrl,
-        String content,
-        LocalDateTime createdAt,
-        int replyCount
-) {
+@AllArgsConstructor
+@NoArgsConstructor
+public class BoardProjection{
+        private String writerName;
+        private String writerPicture;
+        private String videoUrl;
+        private String content;
+        private LocalDateTime createdAt;
+        private Long     replyCount;
 }

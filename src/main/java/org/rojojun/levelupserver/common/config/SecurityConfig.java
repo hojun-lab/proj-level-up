@@ -36,22 +36,22 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
-                                .requestMatchers("/", "/token", "/user/register", "/auth/**", "/check").permitAll()
+                                .requestMatchers("/**", "/token", "/user/register", "/auth/**", "/check").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint -> endpoint.baseUri("/auth/oauth2"))
-                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/facebook"))
+                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/login/oauth2/code/instagram"))
                         .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
                         .successHandler(oAuth2SuccessHandler)
                 )
-                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(
-                        (request, response, authException) -> {
-                            response.setContentType("application/json");
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.getWriter().write("{\"code\" : \"NP\", \"message\" : \"No Permission.\"}");
-                        })
-                )
+//                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(
+//                        (request, response, authException) -> {
+//                            response.setContentType("application/json");
+//                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                            response.getWriter().write("{\"code\" : \"NP\", \"message\" : \"No Permission.\"}");
+//                        })
+//                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();

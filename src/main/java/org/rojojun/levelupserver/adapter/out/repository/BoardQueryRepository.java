@@ -5,14 +5,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.rojojun.levelupserver.adapter.out.projection.BoardProjection;
-import org.rojojun.levelupserver.domain.board.entity.Board;
 import org.rojojun.levelupserver.domain.board.entity.BoardStatus;
-import org.rojojun.levelupserver.domain.board.entity.QBoard;
-import org.rojojun.levelupserver.domain.board.entity.QVideo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

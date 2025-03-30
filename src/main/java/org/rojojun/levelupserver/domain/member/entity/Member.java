@@ -20,8 +20,8 @@ public class Member extends BaseEntity {
     private String nickname;
     private String profilePicture;
 
-    public static Member of(String email, String password, String nickname) {
-        return new Member(email, password, nickname, null);
+    public static Member of(String email, String password, String nickname, String profilePicture) {
+        return new Member(email, password, nickname, profilePicture);
     }
 
     public void modifyNickname(String nickname) {

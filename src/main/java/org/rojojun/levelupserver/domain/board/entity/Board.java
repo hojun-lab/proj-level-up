@@ -22,7 +22,8 @@ public class Board extends BaseEntity {
     private int viewCount;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id", foreignKey = @ForeignKey(name = "FK_BOARD_WRITER"))
+    @JoinColumn(name = "writer_id", foreignKey = @ForeignKey(name = "" +
+            "FK_BOARD_WRITER"))
     private Member writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
