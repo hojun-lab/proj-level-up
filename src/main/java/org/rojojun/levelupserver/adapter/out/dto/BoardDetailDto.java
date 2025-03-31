@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record BoardDetailDto(
-        String writerName,
+        String username,
         String writerPicture,
 //        UserLevel writerLevel,
         String content,
@@ -16,7 +16,7 @@ public record BoardDetailDto(
         int viewCount,
         int videoViewCount,
         LocalDateTime createdAt,
-        List<ReplyDto> replyList
+        List<ReplyDto> comments
 ) {
 
 }
