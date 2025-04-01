@@ -28,8 +28,8 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public List<Board> findAllBy(String email) {
-        return boardRepository.findAllByWriter_EmailAndBoardStatus(email, BoardStatus.USED)
+    public List<Board> findAllBy(String nickname) {
+        return boardRepository.findAllByWriter_NicknameAndBoardStatus(nickname, BoardStatus.USED)
                 .orElse(new ArrayList<>());
     }
 

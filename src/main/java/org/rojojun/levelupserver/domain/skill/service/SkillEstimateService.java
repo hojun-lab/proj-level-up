@@ -16,13 +16,13 @@ import java.util.List;
 public class SkillEstimateService {
     private final SkillEstimateRepository skillEstimateRepository;
 
-    public List<SkillEstimate> getAllBy(String email) {
-        return skillEstimateRepository.findAllByEstimatee_Email(email)
+    public List<SkillEstimate> getAllBy(String nickname) {
+        return skillEstimateRepository.findAllByEstimatee_Nickname(nickname)
                 .orElseThrow();
     }
 
-    public List<SkillEstimate> findAllBy(String email, Long skillId) {
-        return skillEstimateRepository.findAllByEstimatee_EmailAndSkill_Id(email, skillId)
+    public List<SkillEstimate> findAllBy(String nickname, Long skillId) {
+        return skillEstimateRepository.findAllByEstimatee_NicknameAndSkill_Id(nickname, skillId)
                 .orElseThrow();
     }
 
@@ -30,13 +30,13 @@ public class SkillEstimateService {
         return skillEstimateRepository.save(skillEstimate);
     }
 
-    public SkillEstimate findBy(Reply reply, String email) {
-        return skillEstimateRepository.findByReplyAndEstimator_Email(reply, email)
+    public SkillEstimate findBy(Reply reply, String nickname) {
+        return skillEstimateRepository.findByReplyAndEstimator_Nickname(reply, nickname)
                 .orElseThrow();
     }
 
-    public SkillEstimate findBy(Board board, String email) {
-        return skillEstimateRepository.findByBoardAndEstimator_Email(board, email)
+    public SkillEstimate findBy(Board board, String nickname) {
+        return skillEstimateRepository.findByBoardAndEstimator_Nickname(board, nickname)
                 .orElseThrow();
     }
 }

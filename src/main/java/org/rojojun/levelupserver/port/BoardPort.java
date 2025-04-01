@@ -59,7 +59,7 @@ public class BoardPort {
                 replyList.stream()
                         .map(reply -> new ReplyDto(
                                 reply,
-                                skillEstimateService.findBy(reply, reply.getWriter().getEmail()).getScore()
+                                skillEstimateService.findBy(reply, reply.getWriter().getNickname()).getScore()
                         ))
                         .toList()
         );
@@ -87,10 +87,10 @@ public class BoardPort {
     }
 
     @Transactional
-    public Long modifyBoard(Long boardId, String email, BoardRequestDto boardRequestDto) {
+    public Long modifyBoard(Long boardId, String nickname, BoardRequestDto boardRequestDto) {
         Board board = boardService.getBoardById(boardId);
         boolean isExist = videoService.existBy(boardRequestDto.videoUrl());
-        if (!Objects.equals(board.getWriter().getEmail(), email)) {
+        if (!Objects.equals(board.getWriter().getNickname(), nickname)) {
             throw new IllegalArgumentException();
         }
 
@@ -111,9 +111,9 @@ public class BoardPort {
     }
 
     @Transactional
-    public void deleteBoard(Long boardId, String email) {
+    public void deleteBoard(Long boardId, String nickname) {
         Board board = boardService.getBoardById(boardId);
-        if (!Objects.equals(board.getWriter().getEmail(), email)) {
+        if (!Objects.equals(board.getWriter().getNickname(), nickname)) {
             throw new IllegalArgumentException();
         }
 

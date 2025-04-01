@@ -72,9 +72,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     private Member createOAuthUser(OAuth2User oAuth2User) {
         Member facebookLoginUser = Member.of(
                 "google_" + oAuth2User.getAttributes().get("email"),
-                UUID.randomUUID().toString(),
-                oAuth2User.getAttributes().get("name").toString(),
-                ""
+                UUID.randomUUID().toString()
         );
         return memberService.save(facebookLoginUser);
     }

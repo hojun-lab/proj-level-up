@@ -10,12 +10,11 @@ import java.util.Map;
 
 public record MyPageResponseDto(
         String nickname,
-        String email,
         String profilePicture,
         UserLevel userLevel,
         Integer totalPostCount
 ) {
      public MyPageResponseDto(Member member, UserLevel userLevel, int totalPostCount) {
-          this(member.getNickname(), member.getEmail(), member.getProfilePicture(), userLevel, totalPostCount);
+          this(member.getNickname(), member.getProfilePicture(), userLevel, totalPostCount);
      }
 }

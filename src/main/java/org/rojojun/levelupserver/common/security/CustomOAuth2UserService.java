@@ -45,7 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String providerId = (String) attributes.get("sub"); // Google의 고유 식별자
 
         // --- DB 조회 및 처리 ---
-        Optional<Member> userOptional = memberRepository.findMemberByEmail(email);
+        Optional<Member> userOptional = memberRepository.findMemberByNickname(email);
         Member member;
 
         if (userOptional.isPresent()) {
@@ -56,7 +56,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             log.info("Existing user found: {}", email);
         } else {
             // 최초 로그인 (신규 회원)
-            member = Member.of(email, name, registrationId, providerId);
+            member = Member.of(email, name);
             memberRepository.save(member);
             log.info("New user registered: {}", email);
         }

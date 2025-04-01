@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SkillEstimateRepository extends JpaRepository<SkillEstimate, Long> {
-    Optional<List<SkillEstimate>> findAllByEstimatee_Email(String email);
-    Optional<List<SkillEstimate>> findAllByEstimatee_EmailAndSkill_Id (String email, Long skillId);
-    Optional<SkillEstimate> findByReplyAndEstimator_Email(Reply reply, String email);
-    Optional<SkillEstimate> findByBoardAndEstimator_Email(Board board, String email);
+    Optional<List<SkillEstimate>> findAllByEstimatee_Nickname(String nickname);
+    Optional<List<SkillEstimate>> findAllByEstimatee_NicknameAndSkill_Id (String nickname, Long skillId);
+    Optional<SkillEstimate> findByReplyAndEstimator_Nickname(Reply reply, String nickname);
+    Optional<SkillEstimate> findByBoardAndEstimator_Nickname(Board board, String nickname);
 }

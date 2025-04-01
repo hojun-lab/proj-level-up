@@ -33,22 +33,22 @@ public class ReplyPort {
         return board.getId();
     }
 
-    public Long editReply(Long replyId, String email, ReplyRequestDto requestDto) {
+    public Long editReply(Long replyId, String nickname, ReplyRequestDto requestDto) {
         Reply reply = replyService.findById(replyId);
-        if (reply.getWriter().getEmail() != email) {
+        if (reply.getWriter().getNickname() != nickname) {
             throw new IllegalArgumentException();
         }
 
         reply.modify(requestDto.content());
-        SkillEstimate skillEstimate = skillEstimateService.findBy(reply, email);
+        SkillEstimate skillEstimate = skillEstimateService.findBy(reply, nickname);
         skillEstimate.modify(requestDto.score());
 
         return reply.getBoard().getId();
     }
 
-    public Long delete(Long replyId, String email) {
+    public Long delete(Long replyId, String nickname) {
         Reply reply = replyService.findById(replyId);
-        if (reply.getWriter().getEmail() != email) {
+        if (reply.getWriter().getNickname() != nickname) {
             throw new IllegalArgumentException();
         }
 

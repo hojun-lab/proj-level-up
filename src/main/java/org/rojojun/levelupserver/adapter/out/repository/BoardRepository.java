@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    Optional<List<Board>> findAllByWriter_EmailAndBoardStatus(String email, BoardStatus status);
+    Optional<List<Board>> findAllByWriter_NicknameAndBoardStatus(String email, BoardStatus status);
 }

@@ -18,9 +18,8 @@ import java.util.UUID;
 @Getter
 @Entity
 public class Member extends BaseEntity {
-    private String email;
-    private String password;
     private String nickname;
+    private String password;
     private String profilePicture;
 
     @Enumerated(EnumType.STRING)
@@ -31,8 +30,12 @@ public class Member extends BaseEntity {
     private String providerId; // OAuth 제공자의 사용자 식별 ID
 
 
-    public static Member of(String email, String nickname, String provider, String providerId) {
-        return new Member(email, UUID.randomUUID().toString(), nickname, "", Role.ROLE_USER, provider, providerId);
+//    public static Member of(String email, String nickname, String provider, String providerId) {
+//        return new Member(email, UUID.randomUUID().toString(), nickname, "", Role.ROLE_USER, provider, providerId);
+//    }
+
+    public static Member of(String nickname, String password) {
+        return new Member(nickname, password, "", Role.ROLE_USER, "LevelUp", "LevelUp");
     }
 
     public void modifyNickname(String nickname) {

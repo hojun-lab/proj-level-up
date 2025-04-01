@@ -37,13 +37,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            String userId = jwtProvider.validate(token);
-            if (userId == null) {
+            String nickname = jwtProvider.validate(token);
+            if (nickname == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            Member member = memberRepository.findMemberByEmail(userId)
+            Member member = memberRepository.findMemberByNickname(nickname)
                     .orElseThrow(RuntimeException::new);
 
             List<GrantedAuthority> authorities = new ArrayList<>();
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
             AbstractAuthenticationToken abstractAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
+                    new UsernamePasswordAuthenticationToken(nickname, null, authorities);
             abstractAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             securityContext.setAuthentication(abstractAuthenticationToken);

@@ -50,7 +50,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         log.info("Authentication successful for user: {}, role: {}", email, role);
 
         // JWT 생성
-        String token = jwtProvider.createToken(email, role);
+        String token = jwtProvider.create(email, role);
         log.debug("Generated JWT: {}", token); // 실제 운영에서는 로그 출력 주의
 
         // 리디렉션 URL 생성 (프론트엔드 URL + JWT 토큰)

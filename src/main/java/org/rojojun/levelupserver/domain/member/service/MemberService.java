@@ -21,7 +21,7 @@ public class MemberService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public Optional<Member> findMemberBy(String email) {
-        return memberRepository.findMemberByEmail(email);
+    public Optional<Member> findMemberBy(String nickname) {
+        return memberRepository.findMemberByNickname(nickname);
     }
 }
