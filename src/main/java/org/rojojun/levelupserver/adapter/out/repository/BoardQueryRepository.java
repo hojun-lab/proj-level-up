@@ -41,7 +41,7 @@ public class BoardQueryRepository {
                 .join(video).on(video.board.eq(board))
                 .leftJoin(reply).on(reply.board.eq(board))
                 .where(board.boardStatus.eq(BoardStatus.USED))
-                .groupBy(board.id)
+                .groupBy(board.id, member.nickname, member.profilePicture, video.videoUrl, board.content, board.createdAt)
                 .orderBy(board.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)

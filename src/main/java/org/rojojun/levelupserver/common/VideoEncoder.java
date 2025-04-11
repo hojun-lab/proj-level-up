@@ -30,10 +30,13 @@ public class VideoEncoder {
         try {
             FFmpeg ffmpeg = new FFmpeg(FFMPEG);
             FFprobe ffprobe = new FFprobe(FFPROBE);
+
+            String outputFile = VIDEO_OUTPUT_DIR + "/" + UUID.randomUUID() + ".mp4";
+
             FFmpegBuilder builder = new FFmpegBuilder()
                     .setInput(url)
                     .overrideOutputFiles(true)
-                    .addOutput(VIDEO_OUTPUT_DIR + "/" + UUID.randomUUID())
+                    .addOutput(outputFile)
                     .setFormat("mp4")
                     .disableSubtitle()
                     .setVideoCodec("libx264")
@@ -50,7 +53,7 @@ public class VideoEncoder {
 //            executor.createTwoPassJob(builder).run();
             executor.createJob(builder).run();
 
-            return VIDEO_OUTPUT_DIR + "/" + UUID.randomUUID();
+            return outputFile;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,25 +69,25 @@ public class VideoEncoder {
                     .addExtraArgs("-ss", String.format("%.3f", 1.0))
                     .setInput(inputVideoPath)
                     .overrideOutputFiles(true)
-                    .addOutput(THUMBNAIL_OUTPUT_DIR + filename)
+                    .addOutput(THUMBNAIL_OUTPUT_DIR + "/" + filename)
                     .setFrames(1)
                     .disableAudio()
                     .disableSubtitle()
-                    .setVideoFilter(buildScaleFilter(600))
-                    .addExtraArgs("q:v", "3")
+                    .setVideoFilter(buildScaleFilter())
+                    .addExtraArgs("-q:v", "3")
                     .done();
 
             FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
             executor.createJob(builder).run();
 
-            return THUMBNAIL_OUTPUT_DIR + filename;
+            return THUMBNAIL_OUTPUT_DIR  + "/" + filename;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String buildScaleFilter(int resolution) {
-        String resolutionToString = String.valueOf(resolution);
+    private String buildScaleFilter() {
+        String resolutionToString = String.valueOf(600);
         return String.format("scale=%s:%s", resolutionToString, resolutionToString);
     }
 
