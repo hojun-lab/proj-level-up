@@ -6,6 +6,7 @@ import org.rojojun.levelupserver.adapter.out.dto.BoardDetailDto;
 import org.rojojun.levelupserver.adapter.out.dto.ReplyDto;
 import org.rojojun.levelupserver.adapter.out.dto.enums.UserLevel;
 import org.rojojun.levelupserver.adapter.out.projection.BoardProjection;
+import org.rojojun.levelupserver.common.VideoEncoder;
 import org.rojojun.levelupserver.domain.board.entity.Board;
 import org.rojojun.levelupserver.domain.board.entity.Reply;
 import org.rojojun.levelupserver.domain.board.entity.Video;
@@ -38,6 +39,7 @@ public class BoardPort {
     private final VideoService videoService;
     private final ReplyService replyService;
     private final SkillEstimateService skillEstimateService;
+    private final VideoEncoder videoEncoder;
 
     @Transactional(readOnly = true)
     public BoardDetailDto getBoardBy(Long id) {
@@ -51,7 +53,7 @@ public class BoardPort {
                 board.getWriter().getNickname(),
                 board.getWriter().getProfilePicture(),
                 board.getContent(),
-                video.getUrl(),
+                video.getThumbnailUrl(),
                 board.getSkill().getDifficulty(),
                 board.getViewCount(),
                 video.getViewCount(),
@@ -80,7 +82,7 @@ public class BoardPort {
         evaluateSkillDifficulty(skill);
 
         Board board = boardService.saveBoard(boardRequestDto.toEntity(writer, skill));
-        videoService.saveVideo(Video.of(boardRequestDto.videoUrl(), board));
+        connectVideoWithBoard(boardRequestDto.videoUrl(), board);
         skillEstimateService.save(SkillEstimate.ofMyself(skill, writer, writer, board, boardRequestDto.skillRequestDto().score()));
 
         return board.getId();
@@ -104,7 +106,7 @@ public class BoardPort {
 
         if (!isExist) {
             videoService.deleteBy(board);
-            videoService.saveVideo(Video.of(boardRequestDto.videoUrl(), board));
+            connectVideoWithBoard(boardRequestDto.videoUrl(), board);
         }
 
         return board.getId();
@@ -133,5 +135,12 @@ public class BoardPort {
             String result = scoreMeta.getHighestSkillLevel();
             scoreMeta.setResult(result);
         }
+    }
+
+    private void connectVideoWithBoard(String videoUrl, Board board) {
+        String encoded = videoEncoder.mediaEncoding(videoUrl);
+        String thumbnail = videoEncoder.getThumbnail(encoded);
+
+        videoService.saveVideo(Video.of(encoded, thumbnail, board));
     }
 }

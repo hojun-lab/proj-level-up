@@ -21,7 +21,7 @@ public class VideoService {
     }
 
     public boolean existBy(String url) {
-        return videoRepository.existsByUrl(url);
+        return videoRepository.existsByVideoUrl(url);
     }
 
     public void deleteBy(Board board) {

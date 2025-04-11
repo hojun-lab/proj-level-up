@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: levelup-server-app-compose
+    ports:
+      - "9000:8080"
+      - "5005:5005"
+    volumes:
+      - ./dumps:/app/dumps
+      - ./output:/app/output
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/levelup_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=levelup_user
+      - SPRING_DATASOURCE_PASSWORD=levelup_password
+      - OUTPUT_DIR=/app/output
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      # 사용할 네트워크 지정
+      - app-network
+
+  # 2. MySQL 데이터베이스 서비스
+  db:
+    # 공식 MySQL 이미지 사용 (버전 명시 권장)
+    image: mysql:8.0
+    container_name: levelup-server-db
+    environment:
+      # --- MySQL 설정 ---
+      MYSQL_ROOT_PASSWORD: your_strong_root_password
+      MYSQL_DATABASE: levelup_db
+      MYSQL_USER: levelup_user
+      MYSQL_PASSWORD: levelup_password
+    volumes:
+      # 데이터베이스 데이터를 영속적으로 저장하기 위한 Docker 볼륨
+      # 'db_data'라는 이름의 볼륨을 컨테이너의 /var/lib/mysql 경로에 마운트
+      - db_data:/var/lib/mysql
+    ports:
+      - "3320:3306"
+    restart: unless-stopped # 컨테이너 비정상 종료 시 재시작 (명시적 중지 제외)
+    healthcheck:
+      # MySQL 서버가 준비되었는지 확인하는 healthcheck
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 10s    # 10초 간격으로 체크
+      timeout: 5s      # 5초 이상 걸리면 실패
+      retries: 5       # 5번 재시도
+      start_period: 30s # 컨테이너 시작 후 30초 뒤부터 healthcheck 시작
+    networks:
+      # 사용할 네트워크 지정
+      - app-network
+
+# 사용할 네트워크 정의
+networks:
+  app-network:
+    driver: bridge # 기본 브릿지 네트워크 드라이버 사용
+
+# 사용할 Docker 볼륨 정의
+volumes:
+  db_data: # MySQL 데이터를 저장할 명명된 볼륨

@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
     Optional<Video> findByBoard_Id(Long id);
-    boolean existsByUrl(String url);
+    boolean existsByVideoUrl(String url);
     void deleteByBoard(Board board);
 }

@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.rojojun.levelupserver.adapter.out.projection.BoardProjection;
 import org.rojojun.levelupserver.domain.board.entity.BoardStatus;
-import org.rojojun.levelupserver.domain.member.entity.QMember;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -32,7 +31,7 @@ public class BoardQueryRepository {
                         board.id,
                         member.nickname,
                         member.profilePicture,
-                        video.url,
+                        video.videoUrl,
                         board.content,
                         board.createdAt,
                         Expressions.asNumber(reply.id.count()).coalesce(0L)
@@ -43,7 +42,8 @@ public class BoardQueryRepository {
                 .leftJoin(reply).on(reply.board.eq(board))
                 .where(board.boardStatus.eq(BoardStatus.USED))
                 .groupBy(board.id)
-//                .offset(pageable.getOffset())
+                .orderBy(board.createdAt.desc())
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 

@@ -54,7 +54,7 @@ public class MemberPort {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new TokenDto(null);
+            throw new AuthorizationDeniedException("로그인에서 오류가 발생하였습니다.");
         }
         return new TokenDto(token);
     }

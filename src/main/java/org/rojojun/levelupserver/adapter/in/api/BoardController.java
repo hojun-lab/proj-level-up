@@ -30,7 +30,7 @@ public class BoardController {
     }
 
     @PostMapping("/board")
-    public ResponseEntity<Long> save(BoardRequestDto requestDto, Principal principal) {
+    public ResponseEntity<Long> save(@RequestBody BoardRequestDto requestDto, Principal principal) {
         Long result = boardPort.saveBoard(requestDto, principal.getName());
         return ResponseEntity.ok(result);
     }

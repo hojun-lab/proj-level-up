@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/login", "/token", "/user/register", "/auth/**", "/check", "/favicon.ico", "/error", "/default-ui.css").permitAll()
+                        .requestMatchers("/", "/**", "/login", "/token", "/user/register", "/auth/**", "/check", "/favicon.ico", "/error", "/default-ui.css").permitAll()
                         .anyRequest().authenticated()
                 )
 //                .oauth2Login(oauth2 -> oauth2
@@ -53,7 +53,7 @@ public class SecurityConfig {
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
