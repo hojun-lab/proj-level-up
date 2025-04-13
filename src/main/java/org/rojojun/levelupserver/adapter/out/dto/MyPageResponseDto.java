@@ -12,9 +12,10 @@ public record MyPageResponseDto(
         String nickname,
         String profilePicture,
         UserLevel userLevel,
-        Integer totalPostCount
+        Integer totalPostCount,
+        int totalSkills
 ) {
-     public MyPageResponseDto(Member member, UserLevel userLevel, int totalPostCount) {
-          this(member.getNickname(), member.getProfilePicture(), userLevel, totalPostCount);
+     public MyPageResponseDto(Member member, UserLevel userLevel, int totalPostCount, int totalSkills) {
+          this(member.getNickname(), member.getProfilePicture(), userLevel, totalPostCount, totalSkills);
      }
 }

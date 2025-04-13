@@ -1,11 +1,10 @@
 package org.rojojun.levelupserver.domain.skill.service;
 
 import lombok.RequiredArgsConstructor;
-import org.rojojun.levelupserver.adapter.out.dto.SkillResponseDto;
+import org.rojojun.levelupserver.adapter.out.repository.SkillEstimateQueryRepository;
 import org.rojojun.levelupserver.adapter.out.repository.SkillEstimateRepository;
 import org.rojojun.levelupserver.domain.board.entity.Board;
 import org.rojojun.levelupserver.domain.board.entity.Reply;
-import org.rojojun.levelupserver.domain.member.entity.Member;
 import org.rojojun.levelupserver.domain.skill.entity.SkillEstimate;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +14,15 @@ import java.util.List;
 @Service
 public class SkillEstimateService {
     private final SkillEstimateRepository skillEstimateRepository;
+    private final SkillEstimateQueryRepository skillEstimateQueryRepository;
 
     public List<SkillEstimate> getAllBy(String nickname) {
         return skillEstimateRepository.findAllByEstimatee_Nickname(nickname)
                 .orElseThrow();
+    }
+
+    public int countAllGroupBy(String nickname) {
+        return skillEstimateQueryRepository.countAllGroupBy(nickname);
     }
 
     public List<SkillEstimate> findAllBy(String nickname, Long skillId) {

@@ -13,7 +13,6 @@ import org.rojojun.levelupserver.domain.member.entity.Member;
 import org.rojojun.levelupserver.domain.member.entity.MemberEstimate;
 import org.rojojun.levelupserver.domain.member.service.MemberEstimateService;
 import org.rojojun.levelupserver.domain.member.service.MemberService;
-import org.rojojun.levelupserver.domain.skill.entity.SkillEstimate;
 import org.rojojun.levelupserver.domain.skill.service.SkillEstimateService;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +27,7 @@ public class MemberPort {
     private final MemberService memberService;
     private final MemberEstimateService memberEstimateService;
     private final BoardService boardService;
+    private final SkillEstimateService skillEstimateService;
     private final JwtProvider jwtProvider;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -89,8 +88,9 @@ public class MemberPort {
                 .orElse(0);
 
         int totalPost = boardService.findAllBy(email).size();
+        int totalSkills = skillEstimateService.countAllGroupBy(email);
 
-        return new MyPageResponseDto(member, UserLevel.calculate(averageScore), totalPost);
+        return new MyPageResponseDto(member, UserLevel.calculate(averageScore), totalPost, totalSkills);
     }
 
     public boolean idCheck(String nickname) {
